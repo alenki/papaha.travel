@@ -1,0 +1,1135 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   PAPAHA: "БУМАГА И КАМЕНЬ" / "PAPER & STONE"
+   --------------------------------------------------------------------------
+   The whole site swings between two surfaces:
+
+     PAPER   an archival survey map. Undyed sheep wool, hairline rules,
+             marginalia, index numerals, ornament. This is where you *plan*.
+     STONE   teal night at altitude. Photography, glacier light, silence.
+             This is where you *arrive*.
+
+   Every section declares which surface it is; the semantic tokens below flip
+   underneath it, so a component never needs to know where it has been placed.
+
+   --------------------------------------------------------------------------
+   BRAND
+
+   Three colours, lifted off the papaha mark:
+
+     TEAL    #3f7287   the ground the logo sits on
+     CREAM   #f2f5f6   "PAPAHA"
+     GOLD    #ebc96a   "TRAVEL"
+
+   Note what the mark does *not* do: cream and gold never touch each other,
+   and neither is ever set on cream. Both are only ever laid on teal. That is
+   the whole colour logic of the identity, and it is why the accent below
+   flips with the surface instead of staying put:
+
+     on PAPER   the accent is TEAL   (gold on cream is 1.4:1, unreadable)
+     on STONE   the accent is GOLD   (11:1, and the mark's own pairing)
+
+   Anything filled with the accent takes `--accent-contrast` for its text,
+   never `--color-snow`. White on gold is 1.46:1.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Type: self-hosted. No third-party request is made on page load.
+   Google Fonts is unreliable inside Russia, which is most of this audience.
+   Regenerate with: npm run fonts:sync
+   -------------------------------------------------------------------------- */
+
+/* Oranienbaum: Oleg Pospelov's revival of a turn-of-the-century Russian
+   didone. Vertical stress, hairline thins, very tall. Cyrillic is its native
+   script, not an afterthought. Display only, one weight, always uppercase. */
+@font-face {
+  font-family: "Oranienbaum";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/oranienbaum-latin-400-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Oranienbaum";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/oranienbaum-cyrillic-400-normal.woff2") format("woff2");
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: "Oranienbaum";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/oranienbaum-latin-ext-400-normal.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7,
+    U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF,
+    U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Oranienbaum";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/oranienbaum-cyrillic-ext-400-normal.woff2") format("woff2");
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F,
+    U+FE2E-FE2F;
+}
+
+/* Oswald: the wordmark face, and nothing else — "PAPAHA TRAVEL" in the hero,
+   «ПАПАХА» in the masthead and the footer ghost.
+
+   This is a *match*, not the original. The supplied mark is hand-lettered, and
+   measurably so: set the logo on a 26 px cap and its H crossbar sits at 60% of
+   the cap from the top while the E's middle arm sits at 39% — a 21-point
+   spread between two features that any released typeface keeps within three.
+   The same file also runs a short, high middle arm on the E and a P bowl that
+   closes at 63%. There is no font to buy here; there is only a closest fit.
+
+   Oswald is that fit, and on the measurements that describe the mark rather
+   than the drawing hand it is very close:
+
+     PAPAHA, width in cap heights     logo 3.46    Oswald 350  3.45
+     stem width / cap height          logo 0.125   Oswald 350  0.13
+     A, pointed apex (apex ÷ stem)    logo 1.23    Oswald      1.03
+     A crossbar, above the baseline   logo 0.24    Oswald      0.29
+
+   The first line is the one that matters: at weight 350 and zero tracking
+   Oswald sets the word at almost exactly the logo's width-to-height ratio, so
+   the two-line lockup squares up into the same block the mark does. It was
+   also the only face in a 233-variant sweep that got there while carrying a
+   Cyrillic this good — non-negotiable, because the masthead is «ПАПАХА» on
+   both language sides.
+
+   Variable 200–700. `.u-wordmark` sets 350; the masthead nudges to 400,
+   because a 0.125 stem on a 17 px cap is two pixels of white on glass. */
+@font-face {
+  font-family: "Oswald";
+  font-style: normal;
+  font-weight: 200 700;
+  font-display: swap;
+  src: url("/fonts/oswald-latin-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Oswald";
+  font-style: normal;
+  font-weight: 200 700;
+  font-display: swap;
+  src: url("/fonts/oswald-cyrillic-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: "Oswald";
+  font-style: normal;
+  font-weight: 200 700;
+  font-display: swap;
+  src: url("/fonts/oswald-latin-ext-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7,
+    U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF,
+    U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Oswald";
+  font-style: normal;
+  font-weight: 200 700;
+  font-display: swap;
+  src: url("/fonts/oswald-cyrillic-ext-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F,
+    U+FE2E-FE2F;
+}
+
+/* Inter: the masthead face, and only the masthead.
+
+   A neo-grotesque, deliberately not Commissioner. The bar is set small — 17px
+   — but heavier than body copy, and that is exactly the combination in which
+   the difference between the two classes stops being subtle: Commissioner's
+   open apertures, humanist stress and slightly calligraphic 'а' read as warmth
+   as they take on weight, which is right for a paragraph and wrong for a bar
+   that wants to read as signage. Inter closes the apertures, squares the
+   terminals and holds a single vertical axis, so it stays flat and quiet as it
+   gets bolder rather than getting friendlier.
+
+   It also runs optically larger than Commissioner at the same size — a taller
+   x-height on a narrower body — which is why 17px here does more work than the
+   two-point rise off the original 15px suggests.
+
+   Its Cyrillic is the reason it is usable here at all — «Маршруты» and
+   «Контакты» are on every route, and most grotesques with this Latin have a
+   Cyrillic drawn by somebody else afterwards. Variable 100–900. */
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/inter-latin-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/inter-cyrillic-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/inter-latin-ext-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7,
+    U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF,
+    U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/inter-cyrillic-ext-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F,
+    U+FE2E-FE2F;
+}
+
+/* Commissioner: humanist variable sans with a genuinely well-drawn Cyrillic.
+   Low contrast, open apertures, calm. Carries every word you actually read. */
+@font-face {
+  font-family: "Commissioner";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/commissioner-latin-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Commissioner";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/commissioner-cyrillic-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: "Commissioner";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/commissioner-latin-ext-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7,
+    U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF,
+    U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Commissioner";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/commissioner-cyrillic-ext-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F,
+    U+FE2E-FE2F;
+}
+
+/* Martian Mono: the instrument face. Altitudes, coordinates, prices, indices,
+   every micro-label. Blocky, technical, and (rarely for a mono) full Cyrillic. */
+@font-face {
+  font-family: "Martian Mono";
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url("/fonts/martian-mono-latin-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Martian Mono";
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url("/fonts/martian-mono-cyrillic-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: "Martian Mono";
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url("/fonts/martian-mono-latin-ext-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7,
+    U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF,
+    U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Martian Mono";
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url("/fonts/martian-mono-cyrillic-ext-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F,
+    U+FE2E-FE2F;
+}
+
+/* ==========================================================================
+   THEME
+   ========================================================================== */
+
+@theme {
+  /* -- Raw palette. The three brand colours, plus the ramps needed to build
+        two readable surfaces out of them. Every contrast pair a component can
+        actually produce is checked; the ratio is noted beside it. ---------- */
+
+  /* TEAL: the brand ground. `--color-teal` is the mark's exact value. */
+  --color-teal: #3f7287;
+  --color-teal-deep: #2c5364; /* accent text on paper: 7.28:1 */
+  --color-teal-lit: #5c93a9; /* instrument readouts on stone: 5.23:1 */
+
+  /* GOLD: the mark's "TRAVEL". Accent on stone, and accent fills anywhere.
+     Never set as text on paper: 1.41:1. Use --color-gold-ink for that. */
+  --color-gold: #ebc96a;
+  --color-gold-lit: #f5d98a; /* hover, on stone */
+  --color-gold-ink: #7a5e1c; /* the one gold dark enough for paper: 5.35:1 */
+
+  /* Undyed sheep wool, the inside of a papakha, old survey paper. Warm at the
+     highlight, cooling into the teal as it sinks. */
+  --color-paper: #f2f0e9;
+  --color-paper-2: #e9e6dc;
+  --color-paper-3: #dad8ce;
+  --color-paper-4: #c4c6c0;
+
+  /* Stone at night: the teal driven down to almost black. Elbrus basalt seen
+     through the same blue hour the mark was drawn in. */
+  /* -0 is below the page ground, not above it: the paper ramp can sink by
+     going darker into itself, but the stone ramp already starts at almost
+     black, so a recessed stone surface needs its own step underneath. */
+  --color-basalt-0: #070f13;
+  --color-basalt: #0d1a20;
+  --color-basalt-2: #12222a;
+  --color-basalt-3: #1b303a;
+  --color-basalt-4: #2a4553;
+
+  /* Ink: text on paper. Not black; the teal at its darkest.
+     The third rung is the one that matters: it is the resting colour of
+     .u-label and .u-index, which are 11px uppercase mono. That is small text
+     and owes the full 4.5:1 — there is no "it's only a label" exemption in
+     1.4.3 — so it is set against the *sunk* surface, the darkest ground it can
+     ever land on, not against the lightest. Ratios below are bg / raised / sunk
+     and deliberately mirror --color-snow-3 on the stone ramp, so the identical
+     component reads at the same weight on either surface. */
+  --color-ink: #101e25; /* 14.92:1 on paper */
+  --color-ink-2: #3c525c; /* 7.21 / 6.59 / 5.75 */
+  --color-ink-3: #4a5860; /* 6.45 / 5.89 / 5.15 */
+
+  /* Snow: text on stone. `--color-snow` is the mark's "PAPAHA". */
+  --color-snow: #f2f5f6; /* 16.16:1 on basalt */
+  --color-snow-2: #c3d0d5; /* 11.22 / 10.33 / 8.69 */
+  --color-snow-3: #8aa0a8; /* 6.47 / 5.96 / 5.01 */
+
+  /* Glacier: the milk-turquoise of Tserik-Kyol, the Blue Lakes. Now simply
+     the lit end of the brand teal. Instrument readouts on dark surfaces. */
+  --color-glacier: var(--color-teal-lit);
+  --color-glacier-deep: var(--color-teal-deep);
+
+  /* Brass: the gold thread of Kabardian embroidery. Hairlines and ornament,
+     on paper, where the brand gold itself would vanish. */
+  --color-brass: var(--color-gold-ink);
+
+  /* Granite: muted structural grey for disabled/tertiary states. Teal-cast
+     so it sits in the family rather than beside it. */
+  --color-granite: #7e8c92;
+
+  /* -- Families ------------------------------------------------------------ */
+  --font-display: "Oranienbaum", "Times New Roman", Georgia, serif;
+  /* Deliberately separate from --font-display: this face sets the mark, and
+     only the mark. Every other heading on the site stays Oranienbaum.
+     Fallbacks are the two condensed grotesques that actually ship on Windows
+     and macOS, so a swap keeps the lockup roughly the right shape. */
+  --font-wordmark: "Oswald", "Arial Narrow", "Helvetica Neue Condensed",
+    "Liberation Sans Narrow", sans-serif;
+  --font-sans: "Commissioner", "Segoe UI", "Helvetica Neue", sans-serif;
+  --font-mono: "Martian Mono", ui-monospace, "Cascadia Mono", monospace;
+  /* The masthead only. Fallbacks are the grotesques that actually ship on
+     Windows and macOS, so a swap keeps the bar the same shape rather than
+     dropping it into the humanist family it is meant to differ from. */
+  --font-nav: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  /* -- Type scale. Fluid from 360px to 1920px. ----------------------------- */
+  --text-mega: clamp(4rem, 15.5vw, 17rem);
+  /* The mark, and only the mark. Two stacked six-letter words still hold about
+     a third of the viewport — a third is the width at which the mark reads as
+     confident, and past that it reads as loud.
+
+     This is a width, not a height, and the number has to be read that way.
+     Oswald's caps fill 0.81 of the em, so font-size here is a poor proxy for
+     how big the mark looks; what governs is the *wider* of the two lines,
+     TRAVEL, which lays out at 3.40em including its side bearings once it is
+     tracked to match PAPAHA (see the note on WORDMARK in Hero.tsx). The ramp
+     runs 94px at 390 to 181px at 1440 — 92% of the inline space at the small
+     end, 40% of the viewport at the large one. The small end is not cosmetic:
+     the mark is `nowrap`, so a size that does not fit overflows the hero. */
+  --text-wordmark: clamp(5.5rem, 3.85rem + 8.3vw, 13.4rem);
+  --text-d1: clamp(2.75rem, 8.4vw, 8.75rem);
+  --text-d2: clamp(2.125rem, 5.4vw, 5.25rem);
+  --text-d3: clamp(1.625rem, 3.3vw, 3.125rem);
+  --text-d4: clamp(1.3125rem, 2.1vw, 1.9375rem);
+  --text-lead: clamp(1.0625rem, 1.5vw, 1.4375rem);
+  --text-body: clamp(0.9688rem, 0.42vw + 0.86rem, 1.0625rem);
+  --text-sm: 0.9063rem;
+  --text-xs: 0.8125rem;
+  --text-label: 0.6875rem;
+  --text-label-lg: 0.8125rem;
+  --text-numeral: clamp(0.75rem, 0.9vw, 0.875rem);
+
+  /* -- Rhythm -------------------------------------------------------------- */
+  --spacing-gutter: clamp(1.25rem, 4.2vw, 4.5rem);
+  --spacing-section: clamp(4.5rem, 10vw, 10.5rem);
+  --spacing-section-sm: clamp(3rem, 6vw, 6rem);
+
+  /* The masthead is a fixed bar of constant height, and the divider rules
+     inside it run its full depth, so the number has to be a token rather than
+     a padding pair. Anything that has to clear the bar reads the same value.
+
+     Roughly ten pixels deeper than it started at, across the whole ramp: 68px
+     on a phone against 60, 81 at 1440 against 75, 88 at 1920 against 76. The
+     bar carries full-depth rules and a call to action in its own cell, and at
+     the old measure the type inside it had barely a cap-height of air above
+     and below — the cells read as cramped rather than as cells. Nothing else
+     on the site is offset by this value (every route opens on a hero with its
+     own padding, and the bar floats over it), so the ramp moves alone. */
+  --spacing-header: clamp(4.25rem, 1.9rem + 3.5vw, 5.5rem);
+
+  /* -- Motion. Mirrors src/lib/motion.ts exactly. -------------------------- */
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-quint: cubic-bezier(0.83, 0, 0.17, 1);
+  --ease-drift: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-in-quint: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-pop: cubic-bezier(0.34, 1.4, 0.64, 1);
+
+  --animate-marquee: marquee 42s linear infinite;
+  --animate-marquee-slow: marquee 78s linear infinite;
+  --animate-drift-grain: drift-grain 7s steps(6) infinite;
+  --animate-pulse-dot: pulse-dot 2.4s var(--ease-drift) infinite;
+
+  /* -- Layout -------------------------------------------------------------- */
+  --breakpoint-3xl: 100rem;
+}
+
+@keyframes marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes drift-grain {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  16% {
+    transform: translate3d(-3%, 2%, 0);
+  }
+  33% {
+    transform: translate3d(2%, -4%, 0);
+  }
+  50% {
+    transform: translate3d(-2%, 3%, 0);
+  }
+  66% {
+    transform: translate3d(3%, 1%, 0);
+  }
+  83% {
+    transform: translate3d(-1%, -2%, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.35;
+    transform: scale(0.72);
+  }
+}
+
+/* ==========================================================================
+   SEMANTIC SURFACE TOKENS
+   --------------------------------------------------------------------------
+   Components read these, never the raw palette. Wrapping any subtree in
+   `.surface-stone` inverts the entire thing: type, rules, accents, form
+   fields, the grain blend mode, with no component-level branching.
+   ========================================================================== */
+
+@layer base {
+  :root {
+    --bg: var(--color-paper);
+    --bg-raised: var(--color-paper-2);
+    --bg-sunk: var(--color-paper-3);
+
+    --fg: var(--color-ink);
+    --fg-2: var(--color-ink-2);
+    --fg-3: var(--color-ink-3);
+
+    --rule: color-mix(in oklab, var(--color-ink) 16%, transparent);
+    --rule-strong: color-mix(in oklab, var(--color-ink) 34%, transparent);
+
+    /* Teal is the accent here. Gold on cream is 1.41:1 and cannot be used. */
+    --accent: var(--color-teal); /* fills, rules: 4.64:1 */
+    --accent-text: var(--color-teal-deep); /* accent as type: 7.28:1 */
+    --accent-contrast: var(--color-snow); /* on a teal fill: 4.83:1 */
+
+    --data: var(--color-ink-2);
+
+    --grain-opacity: 0.055;
+    --grain-blend: multiply;
+
+    --selection-bg: var(--color-teal);
+    --selection-fg: var(--color-snow);
+  }
+
+  .surface-stone {
+    --bg: var(--color-basalt);
+    --bg-raised: var(--color-basalt-2);
+    --bg-sunk: var(--color-basalt-0);
+
+    --fg: var(--color-snow);
+    --fg-2: var(--color-snow-2);
+    --fg-3: var(--color-snow-3);
+
+    --rule: color-mix(in oklab, var(--color-snow) 15%, transparent);
+    --rule-strong: color-mix(in oklab, var(--color-snow) 32%, transparent);
+
+    /* Gold is the accent here: the mark's own pairing, and 11:1. */
+    --accent: var(--color-gold); /* 11.04:1 on basalt */
+    --accent-text: var(--color-gold);
+    --accent-contrast: var(--color-basalt); /* on a gold fill: 11.04:1 */
+
+    --data: var(--color-glacier);
+
+    --grain-opacity: 0.075;
+    --grain-blend: overlay;
+
+    --selection-bg: var(--color-gold);
+    --selection-fg: var(--color-basalt);
+
+    background-color: var(--bg);
+    color: var(--fg);
+  }
+
+  /* Paper explicitly reasserted, for a light island inside a dark run. */
+  .surface-paper {
+    --bg: var(--color-paper);
+    --bg-raised: var(--color-paper-2);
+    --bg-sunk: var(--color-paper-3);
+    --fg: var(--color-ink);
+    --fg-2: var(--color-ink-2);
+    --fg-3: var(--color-ink-3);
+    --rule: color-mix(in oklab, var(--color-ink) 16%, transparent);
+    --rule-strong: color-mix(in oklab, var(--color-ink) 34%, transparent);
+    --accent: var(--color-teal);
+    --accent-text: var(--color-teal-deep);
+    --accent-contrast: var(--color-snow);
+    --data: var(--color-ink-2);
+    --grain-opacity: 0.055;
+    --grain-blend: multiply;
+    --selection-bg: var(--color-teal);
+    --selection-fg: var(--color-snow);
+    background-color: var(--bg);
+    color: var(--fg);
+  }
+
+  /* ---------------------------------------------------------------------- */
+
+  * {
+    border-color: var(--rule);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: auto; /* Lenis owns scrolling */
+    scrollbar-gutter: stable;
+    /* Belt and braces against a decorative absolute escaping its section and
+       introducing a horizontal scrollbar. `clip` rather than `hidden` on
+       purpose: `hidden` turns the element into a scroll container, which
+       silently breaks every `position: sticky` on the site. */
+    overflow-x: clip;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    font-weight: 380;
+    line-height: 1.62;
+    letter-spacing: -0.003em;
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior-y: none;
+  }
+
+  /* Lenis drives scroll; it needs the page to be a normal document flow. */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  ::selection {
+    background: var(--selection-bg);
+    color: var(--selection-fg);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
+
+  /* Headings never carry their own size: every one is set explicitly. */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: inherit;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  img,
+  svg,
+  video {
+    display: block;
+    max-width: 100%;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  input,
+  textarea,
+  select {
+    font: inherit;
+    color: inherit;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--fg-3);
+    opacity: 1;
+  }
+
+  /* Kill the yellow Chrome autofill wash: it destroys the palette. */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  textarea:-webkit-autofill {
+    -webkit-text-fill-color: var(--fg);
+    -webkit-box-shadow: 0 0 0 1000px var(--bg-raised) inset;
+    transition: background-color 100000s ease-in-out 0s;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-paper-2);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-paper-4);
+    border: 3px solid var(--color-paper-2);
+    border-radius: 99px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-granite);
+  }
+}
+
+/* ==========================================================================
+   COMPONENT-LEVEL PRIMITIVES
+   ========================================================================== */
+
+@layer components {
+  /* -- Display type ------------------------------------------------------- */
+
+  .u-display {
+    font-family: var(--font-display);
+    font-weight: 400;
+    text-transform: uppercase;
+    line-height: 0.9;
+    letter-spacing: 0.005em;
+    text-wrap: balance;
+    /* Russian compounds get very long: "достопримечательностям" is 22
+       characters and will happily run straight out of its column at display
+       size. Allow the break rather than trusting every headline to be short. */
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  /* Cyrillic caps are wider and flatter than Latin; at mega sizes the
+     Oranienbaum thins need a hair more air or the counters close up. */
+  .u-display-mega {
+    font-family: var(--font-display);
+    font-weight: 400;
+    text-transform: uppercase;
+    line-height: 0.82;
+    letter-spacing: 0.012em;
+    overflow-wrap: break-word;
+  }
+
+  /* The mark set large: "PAPAHA" over "TRAVEL" at the top of the home page.
+     Not a variant of .u-display — a different face, a different script and a
+     different job, so it does not inherit from one. */
+  .u-wordmark {
+    font-family: var(--font-wordmark);
+    /* 350, because that is where Oswald's stem lands on the logo's: 0.13 of
+       the cap height against the mark's measured 0.125. 400 is visibly
+       heavier than the drawing, 300 visibly thinner. */
+    font-weight: 350;
+    font-size: var(--text-wordmark);
+    text-transform: uppercase;
+    /* The mark's own leading, read off the file: 33 px between baselines on a
+       27 px cap, so 1.22 cap heights. Oswald's caps are 0.81em, which puts
+       that at 0.99em. The two words then lock into one block at the same
+       proportion the logo does — 3.45 wide by 2.22 tall, in cap heights. */
+    line-height: 0.99;
+    /* Flush, and it has to be. Oswald at 350 sets PAPAHA at 3.48 cap heights
+       against the logo's 3.46 — but SplitText gives every character its own
+       inline-block, which is what the rise mask needs and which also switches
+       kerning off between them. Measured off the rendered page that carries
+       the word to 3.57 with nothing added at all. Tracking on top pushes it
+       further from the mark's proportion, and that ratio is the one number
+       the whole lockup is built on. */
+    letter-spacing: 0;
+    /* Centred text pays for its trailing letter-space: the browser counts it
+       into the line width, so the visible glyphs settle half a space left of
+       true centre. An indent of exactly one letter-space cancels it out. Any
+       line that overrides the tracking has to override this to match. */
+    text-indent: 0;
+    /* A wordmark that breaks mid-name is not a wordmark. This turns a mis-sized
+       --text-wordmark into an overflow you can see rather than a silent
+       "PAPAH / A" at one awkward viewport width. */
+    white-space: nowrap;
+    /* No fi/fl in a wordmark, and no discretionary ligatures either: they
+       would quietly redraw the mark. */
+    font-variant-ligatures: none;
+  }
+
+  /* The line box is pulled in tighter than the font's own ascent and descent,
+     so the caps sit proud of it at the baseline. The rise-reveal mask clips to
+     that box, so it needs the slack or the feet of the letters are shaved off
+     mid-animation. Oswald's caps fill 0.81 of the em, so a sub-1 line box
+     leaves a lot of glyph standing outside it and the padding has to clear
+     all of it — 0.12em, which is enough for .u-mask elsewhere, shaves the
+     feet off every letter in the mark. */
+  .u-wordmark .u-mask {
+    padding-bottom: 0.3em;
+    margin-bottom: -0.3em;
+  }
+
+  /* -- Fixed chrome -------------------------------------------------------- */
+
+  /*
+     The masthead.
+
+     It is permanent: it sits over photography at the top of every route and
+     over cream body copy for the whole of the rest, and it never retracts.
+
+     It has NO ground of its own, in any state, and no treatment either. It is
+     a blurred sample of whatever is behind it and nothing else, so the bar
+     reads as the page gone soft rather than as a plate laid on top of it.
+
+     Which leaves the type with nothing guaranteed underneath it, and that is
+     the real cost of the decision: snow nav over blurred cream is 1.1:1. The
+     usual answer is to fade a wash in on scroll, but a wash is exactly the
+     plate this is trying not to be. So the bar INVERTS instead. It carries no
+     fixed token set — `surface-stone` and `surface-paper` are swapped onto it
+     from script, by `useBackdrop` in lib/backdrop.ts, according to which
+     surface is actually painted behind it at that moment. Over the hero the
+     type is snow; over the paper sections it is ink; over the stone footer it
+     is snow again.
+
+     What does NOT swap is the accent. Everywhere else on the site it flips
+     with the surface — teal on paper, gold on stone — because gold on cream is
+     1.4:1 and cannot carry type. The masthead is the exception, and it is
+     deliberate: the accent here is the mark's own gold, it is the same gold in
+     the horn beside the wordmark, and a logo colour that changes as you scroll
+     past a section boundary is not a logo colour. So the three accent tokens
+     are pinned below and the bar keeps gold on every surface.
+
+     The cost is real and it is the one the site-wide flip exists to avoid: on
+     the paper sections the hovered and current routes measure 1.41:1 against
+     the cream behind them, which is not a contrast decision. It is accepted
+     here because it only ever lands on a hover state and on the one route you
+     are already looking at — never on the five you are trying to read.
+
+     Everything else that follows from the swap is already written: the surface
+     classes at the top of this file carry type, hairlines, the grain blend and
+     the selection colours. Nothing here branches on any of it.
+  */
+  .u-glass-bar {
+    /* Not a wash at 0%, and not a token that something might later be tempted
+       to turn up: nothing. The bar has no ground of its own in any state.
+       `background-color` is declared anyway because the surface classes are
+       token carriers here rather than plates, and both of them set a solid
+       `--bg` in @layer base — this is the line that takes it back off. */
+    background-color: transparent;
+
+    /* The accent, pinned. `surface-stone` and `surface-paper` both set these
+       three in @layer base and this rule is in @layer components, so it wins
+       whichever class the script has put on the bar. One place, and every
+       child inherits it — the horn, the current route, the hover state and the
+       call to action's fill all take gold without any of them knowing why.
+
+       --accent-contrast has to move with it. It is the text laid ON an accent
+       fill, and the only thing that survives on gold is basalt at 11:1; the
+       snow that paper would have handed it is 1.46:1. */
+    --accent: var(--color-gold);
+    --accent-text: var(--color-gold);
+    --accent-contrast: var(--color-basalt);
+
+    /* Blur, and nothing else. No saturate() lift: the bar is meant to be the
+       page out of focus, and pushing the chroma back up is a treatment — it
+       makes the strip behind the type read as a different, hotter version of
+       what it is sitting on rather than as the same picture, softened. */
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    /* Everything in the bar swaps token set when the surface under it does,
+       so the hairline has to cross with the type rather than after it. The
+       children carry their own colour transitions.
+
+       The blur is in the list for the same reason: it now comes and goes at
+       the foot of the opening section (see `[data-flat]` below) and a glass
+       treatment that cuts in at a scroll threshold reads as a bug. */
+    transition:
+      border-color 0.45s var(--ease-drift),
+      -webkit-backdrop-filter 0.5s var(--ease-drift),
+      backdrop-filter 0.5s var(--ease-drift);
+  }
+
+  /*
+     The masthead over the opening section.
+
+     Every route on the site opens on stone — the home page on a full-bleed
+     photograph, everything else on flat basalt — and for the length of that
+     section the bar is a different object. It stops being glass and becomes
+     an outline: no blur, pure white type, and a hairline bright enough to
+     actually draw the bottom of it.
+
+     Each of the three is the same argument.
+
+     NO BLUR, because over the opening section there is nothing for it to do
+     and something for it to cost. On an inner page it is twenty pixels of
+     work to reproduce the flat colour that was already there. On the home
+     page it is worse than nothing: it softens the top of the photograph at
+     the one moment the photograph is the entire content of the screen. Past
+     the opener the bar starts crossing body copy, tiles and gutters, and the
+     blur goes back to earning its place.
+
+     `blur(0px)` rather than `none`, because a filter list interpolates
+     against another filter list and does not interpolate against a keyword.
+     The glass arriving at the seam has to be a fade.
+
+     PURE WHITE rather than snow, for exactly the reason the hero's own lead
+     paragraph is (see the note on it in Hero.tsx): this is the only state on
+     the site where type is set over an ungraded picture instead of a flat
+     surface, and value is one of the two things carrying it. Snow is 96%
+     white and calibrated against basalt at 16:1, which is a ratio that means
+     nothing against a sky.
+
+     A BRIGHTER RULE for the third time round the same point. 15% of snow is
+     a hairline against basalt; against the top of a daylit photograph it is
+     not there at all, and the one thing the bar has instead of a plate is
+     its own outline. The full-depth cell dividers inherit it, so the bar's
+     structure comes up with the border.
+
+     The contrast cost is the hero's own, unchanged and still real: over the
+     brightest snow in the picture the nav runs about 2.5:1, which is under
+     what it owes. That is a property of clear type over an ungraded
+     photograph and no colour choice removes it — the fix is a scrim, and a
+     scrim is the plate this whole treatment exists not to be.
+  */
+  .u-glass-bar[data-flat] {
+    -webkit-backdrop-filter: blur(0px);
+    backdrop-filter: blur(0px);
+
+    --fg: #fff;
+    --fg-2: color-mix(in oklab, #fff 88%, transparent);
+    --fg-3: color-mix(in oklab, #fff 76%, transparent);
+
+    --rule: color-mix(in oklab, #fff 34%, transparent);
+    --rule-strong: color-mix(in oklab, #fff 56%, transparent);
+  }
+
+  /* Without backdrop-filter there is no glass, only a hole. The type would sit
+     directly on whatever it is passing over with nothing between them, so the
+     bar takes the solid ground of whichever surface it is currently wearing —
+     which is still the right colour for the type, just opaque. */
+  @supports not (
+    (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
+  ) {
+    .u-glass-bar {
+      background-color: var(--bg);
+    }
+  }
+
+  /* The floating altimeter bezel. Fixed chrome sitting over both surfaces, so
+     it carries its own paper background rather than inheriting whichever
+     section happens to be behind it. */
+  .u-instrument {
+    background-color: var(--color-paper);
+    border: 1px solid color-mix(in oklab, var(--color-ink) 20%, transparent);
+    box-shadow: 0 1px 14px -6px color-mix(in oklab, var(--color-basalt) 55%, transparent);
+  }
+
+  /* -- The instrument voice ----------------------------------------------- */
+
+  .u-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    /* Not 1: Martian Mono's ascenders overshoot the em box, so a label that
+       wraps to two lines overlaps itself. */
+    line-height: 1.3;
+    font-variant-numeric: tabular-nums;
+    color: var(--fg-3);
+  }
+
+  .u-label-accent {
+    color: var(--accent-text);
+  }
+
+  .u-data {
+    font-family: var(--font-mono);
+    font-weight: 400;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+    color: var(--data);
+  }
+
+  /* Marginal index numerals: 01 / 02 / 03 running down the page edge. */
+  .u-index {
+    font-family: var(--font-mono);
+    font-size: var(--text-numeral);
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    font-variant-numeric: tabular-nums;
+    color: var(--fg-3);
+  }
+
+  .u-lead {
+    font-size: var(--text-lead);
+    line-height: 1.48;
+    font-weight: 340;
+    letter-spacing: -0.011em;
+    color: var(--fg-2);
+    text-wrap: pretty;
+  }
+
+  /* -- Structure ---------------------------------------------------------- */
+
+  .u-shell {
+    width: 100%;
+    max-width: 108rem;
+    margin-inline: auto;
+    padding-inline: var(--spacing-gutter);
+  }
+
+  .u-shell-wide {
+    width: 100%;
+    max-width: 128rem;
+    margin-inline: auto;
+    padding-inline: var(--spacing-gutter);
+  }
+
+  .u-rule {
+    border: 0;
+    border-top: 1px solid var(--rule);
+    height: 0;
+    width: 100%;
+  }
+
+  /* The masking parent for every rise-reveal. */
+  .u-mask {
+    display: block;
+    overflow: hidden;
+    /* Oranienbaum's descenders sit low; give the mask a little slack so the
+       Ц, Д and У tails aren't guillotined mid-animation. */
+    padding-bottom: 0.12em;
+    margin-bottom: -0.12em;
+  }
+
+  /* -- Textures ------------------------------------------------------------ */
+
+  /* Film grain. Fixed, so it never scrolls with content: it reads as an
+     emulsion on the screen rather than a texture on the page. */
+  .u-grain::after {
+    content: "";
+    position: fixed;
+    inset: -60%;
+    z-index: 60;
+    pointer-events: none;
+    opacity: var(--grain-opacity);
+    mix-blend-mode: var(--grain-blend);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation: var(--animate-drift-grain);
+    will-change: transform;
+  }
+
+  /* Laid-paper fibre. Almost subliminal: you feel it, you don't see it. */
+  .u-fibre {
+    background-image: repeating-linear-gradient(
+        94deg,
+        color-mix(in oklab, var(--color-ink) 2.6%, transparent) 0 1px,
+        transparent 1px 3px
+      ),
+      repeating-linear-gradient(
+        176deg,
+        color-mix(in oklab, var(--color-ink) 1.8%, transparent) 0 1px,
+        transparent 1px 5px
+      );
+  }
+
+  /* Vignette for stone sections carrying photography. */
+  .u-vignette {
+    position: relative;
+  }
+  .u-vignette::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      120% 88% at 50% 42%,
+      transparent 38%,
+      color-mix(in oklab, var(--color-basalt) 62%, transparent) 100%
+    );
+  }
+
+  /* -- Links -------------------------------------------------------------- */
+
+  /* An underline that draws itself from the left, then retracts to the right.
+     Used on every inline link and nav item on the site. */
+  .u-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 0% 1px;
+    transition: background-size 0.45s var(--ease-out-quint);
+    padding-bottom: 0.12em;
+  }
+  .u-underline:hover,
+  .u-underline:focus-visible,
+  .group:hover .u-underline {
+    background-size: 100% 1px;
+  }
+
+  .u-underline-out {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-position: 100% 100%;
+    background-size: 100% 1px;
+    transition: background-size 0.45s var(--ease-out-quint);
+    padding-bottom: 0.12em;
+  }
+  .u-underline-out:hover,
+  .group:hover .u-underline-out {
+    background-size: 0% 1px;
+  }
+
+  /* -- Misc --------------------------------------------------------------- */
+
+  .u-hairline-top {
+    box-shadow: inset 0 1px 0 0 var(--rule);
+  }
+
+  .u-tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Hide from sighted users, keep for screen readers. */
+  .u-sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  /* Skip link: visible only when focused. */
+  .u-skip {
+    position: fixed;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 200;
+    transform: translateY(-160%);
+    transition: transform 0.3s var(--ease-out-quint);
+    background: var(--color-ink);
+    color: var(--color-paper);
+    padding: 0.75rem 1.25rem;
+  }
+  .u-skip:focus-visible {
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   REDUCED MOTION
+   --------------------------------------------------------------------------
+   Everything still *arrives*: it just stops travelling to get there.
+   Reveal components read this same query in JS and skip their transforms.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .u-grain::after {
+    animation: none;
+  }
+}

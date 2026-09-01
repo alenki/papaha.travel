@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="papaha">
+  <!--
+    The papaha mark at icon size.
+
+    Same Circassian ram's-horn spiral as <HornMark> in src/components/ui/Ornament.tsx,
+    scaled 1.2x and re-centred on a 64 grid, with the stroke opened up so the
+    counter of the spiral survives a 16px render.
+
+    Gold #ebc96a on the teal ground #3f7287: the mark's own pairing, and the only
+    one of the three brand colours that stays legible against the others at this
+    size. Cream is deliberately absent - it never touches gold in the identity.
+  -->
+  <rect width="64" height="64" fill="#3f7287"/>
+  <path
+    d="M14 44 C 11.6 24.8, 28.4 14, 41.6 21.2 C 52.4 27.2, 51.2 44, 39.2 47.6 C 30.8 50, 24.8 42.8, 29.6 36.8"
+    fill="none"
+    stroke="#ebc96a"
+    stroke-width="5.5"
+    stroke-linecap="round"
+  />
+</svg>
